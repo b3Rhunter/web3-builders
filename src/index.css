@@ -16,7 +16,7 @@ code {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 
   background-color: hsla(0, 0%, 100%, 1);
@@ -31,15 +31,42 @@ code {
   color: rgb(20, 20, 20);
 }
 
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 50%;
+  height: 85px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: rgb(21, 20, 20);
+  font-size: 1.3em;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
 .card {
-  height: 350px;
-  width: 350px;
+  height: calc(100% - 130px);
+  width: 80%;
+  min-width: 350px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
+  gap: 1em;
 
+  margin-bottom: 30px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 1em;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -50,10 +77,11 @@ code {
 
 .card img {
   width: 200px;
+  margin-block: 1.5em;
 }
 
 .card hr {
-  width: 90%;
+  width: 100%;
   opacity: 0.3;
 }
 
@@ -83,4 +111,99 @@ button:active {
   position: fixed;
   top: 24px;
   right: 24px;
+}
+
+.home {
+  height: 100svh;
+  height: 100vh;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mint {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.connect-btn {
+  margin: auto;
+}
+
+.podcast {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  overflow-y: auto;
+}
+
+.thumb {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 250px;
+  margin: 10px;
+  margin-bottom: -30px;
+}
+
+iframe {
+  margin: 10px;
+  margin-bottom: -10px !important;
+}
+
+.thumb img, iframe {
+  width: 100%;
+  max-height: 140px;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  background-color: #26263000;
+  width: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.203);
+  border-radius: 100vw;
+  margin-top: 0.5em;
+  margin-bottom: 1.2em;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8385875a;
+  border-radius: 100vw;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.678);
 }

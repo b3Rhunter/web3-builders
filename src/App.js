@@ -1,5 +1,8 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { ethers } from 'ethers';
+import Mint from './Mint';
+import Podcast from './Podcast';
 import ABI from './ABI.json';
 import Logo from './Logo.png';
 
@@ -9,7 +12,7 @@ function App() {
 
   const [connected, setConnected] = useState(false);
   const [minted, setMinted] = useState(false);
-  const [name, setName] = useState(null)
+  const [name, setName] = useState(null);
 
   const connect = async () => {
     try {
@@ -95,26 +98,29 @@ function App() {
   
   return (
     <div className="app">
-      {!connected && <button className='connect-btn' onClick={connect}>connect</button>}
-      {connected && <button className='disconnect-btn' onClick={disconnect}>{name}</button>}
+      <BrowserRouter>
+        {!connected ? (
+          <button className='connect-btn' onClick={connect}>Connect</button>
+        ) : (
+          <>
+            <button className='disconnect-btn' onClick={disconnect}>{name}</button>
+            <nav>
+              <Link to='/mint'>Mint</Link>
+              <Link to='/podcast'>Podcast</Link>
+            </nav>
+            
+            <div className='card'>
+              <img src={Logo} alt='logo' />
+              <hr />
+            <Routes>
+              <Route path='/mint' element={<Mint mint={mint} minted={minted} />} />
+              <Route path='/podcast' element={<Podcast />} />
+            </Routes>
 
-      {connected && (
-        <div className='card'>
-          {!minted && (
-          <>
-            <img src={Logo} alt='logo' />
-            <hr />
-            <button onClick={mint}>MINT</button>
+            </div>
           </>
-          )}
-          {minted && (
-          <>
-            <img src={Logo} alt='logo' />
-            <p>Minted! Thank you 🙏</p>
-          </>
-          )}
-        </div>
-      )}
+        )}
+      </BrowserRouter>
     </div>
   );
 }
