@@ -108,11 +108,12 @@ function App() {
               <Link to='/mint'>Mint</Link>
               <Link to='/podcast'>Podcast</Link>
             </nav>
-            
+
             <div className='card'>
               <img src={Logo} alt='logo' />
               <hr />
             <Routes>
+            <Route path="/" element={<Podcast />} />
               <Route path='/mint' element={<Mint mint={mint} minted={minted} />} />
               <Route path='/podcast' element={<Podcast />} />
             </Routes>
