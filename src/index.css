@@ -164,9 +164,15 @@ iframe {
 
 .thumb img, iframe {
   width: 100%;
-  max-height: 140px;
+  max-height: 138px;
   object-fit: cover;
   overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.201);
+  border-radius: 1em;
+  overflow: hidden;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 
