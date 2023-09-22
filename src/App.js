@@ -100,11 +100,8 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
-        {!connected ? (
-          <button className='connect-btn' onClick={connect}>Connect</button>
-        ) : (
           <>
-            <button className='disconnect-btn' onClick={disconnect}>{name}</button>
+            {/* <button className='disconnect-btn' onClick={disconnect}>{name}</button> */}
             <nav>
               <Link to='/home'>Home</Link>
               <Link to='/mint'>Collect</Link>
@@ -117,13 +114,12 @@ function App() {
             <Routes>
             <Route path="/" element={<Home />} />
               <Route path='/home' element={<Home/>}/>
-              <Route path='/mint' element={<Mint mint={mint} minted={minted} />} />
+              <Route path='/mint' element={<Mint mint={mint} minted={minted} connect={connect} connected={connected} />} />
               <Route path='/podcast' element={<Podcast />} />
             </Routes>
 
             </div>
           </>
-        )}
       </BrowserRouter>
     </div>
   );

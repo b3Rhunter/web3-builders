@@ -1,8 +1,12 @@
 import Logo from './Logo.svg';
 
-function Mint({mint, minted}) {
+function Mint({mint, minted, connect, connected}) {
     return(
         <div className="mint">
+            {!connected ? (
+                          <button className='connect-btn' onClick={connect}>Connect</button>
+                          ) : (
+                            <>          
             {!minted ? (
                 <button onClick={mint}>MINT</button>
             ) : (
@@ -11,6 +15,8 @@ function Mint({mint, minted}) {
                 <p>Minted! Thank you 🙏</p>
                 </>
             )}
+            </>
+         )}
         </div>
     );
 }
