@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: monospace;
@@ -35,8 +39,8 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
-
-  width: 50%;
+  width: 100%;
+  max-width: 100vw;
   height: 85px;
 
   display: flex;
@@ -46,7 +50,6 @@ nav {
   flex-wrap: wrap;
   gap: 10px;
 
-  padding-left: 20px;
 }
 
 nav a {
@@ -234,11 +237,66 @@ iframe {
   font-size: 18px !important;
 }
 
+.team {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  flex-wrap: wrap;
 
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  overflow-y: auto;
+}
 
+.evan, .will {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  min-width: 250px;
+  width: calc(50% - 1em);
+}
 
+.team img {
+  width: 90%;
+  max-width: 225px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
 
+.team p {
+  font-size: 1.2em;
+}
 
+.evan a, .will a {
+  text-decoration: none;
+  color: rgb(21, 20, 20);
+}
+
+.sub {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  width: 100%;
+}
+
+.sub-btns {
+  display: flex;
+  gap: 20px;
+}
+
+.sub input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+}
 
 
 

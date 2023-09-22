@@ -4,16 +4,21 @@ import { ethers } from 'ethers';
 import Mint from './Mint';
 import Podcast from './Podcast';
 import Home from './Home';
+import Team from './Team';
 import ABI from './ABI.json';
+import SubABI from './SubscribeABI.json';
 import Logo from './Logo.png';
 
 const contractAddress = "0xD748F1C8C250f1bF1B9EFadd156aBD6EaE5F5143";
+const subscribeAddress = "0xf8eC8459ee17B65e6f8A741B3286719822C92A78";
 
 function App() {
 
   const [connected, setConnected] = useState(false);
   const [minted, setMinted] = useState(false);
   const [name, setName] = useState(null);
+  const [userName, setUserName] = useState("");
+  const [sub, setSub] = useState(false);
 
   const connect = async () => {
     try {
@@ -57,6 +62,11 @@ function App() {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
       const _userAddress = await signer.getAddress();
+      const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
+      const subCheck = await contract.isSubscriber(_userAddress);
+      if (subCheck === false) {
+        setSub(true)
+      }
       const { ethereum } = window;
       if (ethereum) {
         const ensProvider = new ethers.providers.InfuraProvider('mainnet');
@@ -64,9 +74,13 @@ function App() {
         const ens = await ensProvider.lookupAddress(_userAddress);
         if (ens !== null) {
           setName(ens)
-
         } else {
           setName(displayAddress)
+        }
+
+        if (subCheck === true) {
+          const getName = await contract.getUsername(_userAddress);
+          setName(getName)
         }
       }
 
@@ -96,26 +110,67 @@ function App() {
     setConnected(false)
     setMinted(false)
   }
+
+  const subscribe = async (userName) => {
+    try {
+      console.log(userName)
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const address = signer.getAddress();
+      const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
+      const tx = await contract.subscribe(userName);
+      await tx.wait()
+      setSub(false)
+      setName(userName)
+      setConnected(true)
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+  function openSub() {
+    setSub(true)
+  }
+
+  function closeSub() {
+    setSub(false)
+  }
   
   return (
     <div className="app">
       <BrowserRouter>
           <>
             {/* <button className='disconnect-btn' onClick={disconnect}>{name}</button> */}
+            
             <nav>
               <Link to='/home'>Home</Link>
               <Link to='/mint'>Collect</Link>
               <Link to='/podcast'>Podcast</Link>
+              <Link to='/team'>The Team</Link>
+              {!connected && <button onClick={connect}>Sign In</button>}
+              {connected && <button onClick={disconnect}>{name}</button>}
             </nav>
 
             <div className='card'>
               <img src={Logo} alt='logo' />
               <hr />
+            {sub && (
+              <div className='sub'>
+                <p>Sign up today!</p>
+                <input type='text' placeholder='choose user name...' value={userName} onChange={(e) => setUserName(e.target.value)}/>
+                <div className='sub-btns'>
+                <button onClick={() => subscribe(userName)}>submit</button>
+                <button onClick={closeSub}>close</button>
+                </div>
+              </div>
+            )}
             <Routes>
             <Route path="/" element={<Home />} />
               <Route path='/home' element={<Home/>}/>
               <Route path='/mint' element={<Mint mint={mint} minted={minted} connect={connect} connected={connected} />} />
               <Route path='/podcast' element={<Podcast />} />
+              <Route path='/team' element={<Team/>}/>
             </Routes>
 
             </div>
