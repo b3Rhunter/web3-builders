@@ -190,24 +190,26 @@ iframe {
 }
 
 .home p {
-  padding: 1em;
+
   line-height: 1.6;
   font-size: 16px;
   font-weight: 700;
   text-wrap: balance;
-
-  max-height: 90%;
+  min-width: 330px;
+  max-width: 80%;
+  flex-grow: 1;
   overflow-y: auto;
 }
 
 .home-cont {
-  height: 100%;
   width: 100%;
-
+  min-width: 350px;
+  max-width: 80%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   gap: 1em;
+  margin-block: 1.5em;
 }
 
 .home-cont a {
