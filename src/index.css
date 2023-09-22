@@ -298,7 +298,14 @@ iframe {
   text-align: center;
 }
 
-
+.subs {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
 
 
 

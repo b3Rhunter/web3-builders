@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { ethers } from 'ethers';
 import Mint from './Mint';
@@ -19,6 +19,7 @@ function App() {
   const [name, setName] = useState(null);
   const [userName, setUserName] = useState("");
   const [sub, setSub] = useState(false);
+  const [subs, setSubs] = useState("")
 
   const connect = async () => {
     try {
@@ -64,9 +65,7 @@ function App() {
       const _userAddress = await signer.getAddress();
       const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
       const subCheck = await contract.isSubscriber(_userAddress);
-      if (subCheck === false) {
-        setSub(true)
-      }
+
       const { ethereum } = window;
       if (ethereum) {
         const ensProvider = new ethers.providers.InfuraProvider('mainnet');
@@ -77,14 +76,17 @@ function App() {
         } else {
           setName(displayAddress)
         }
-
-        if (subCheck === true) {
-          const getName = await contract.getUsername(_userAddress);
-          setName(getName)
-        }
       }
 
       await signer.signMessage("Welcome to Web3 Builders!");
+
+      if (subCheck === false) {
+        setSub(true)
+      }
+      if (subCheck === true) {
+        const getName = await contract.getUsername(_userAddress);
+        setName(getName)
+      }
       setConnected(true)
     } catch(error) {
       console.log(error)
@@ -109,6 +111,7 @@ function App() {
   const disconnect = async () => {
     setConnected(false)
     setMinted(false)
+    setSub(false)
   }
 
   const subscribe = async (userName) => {
@@ -121,6 +124,8 @@ function App() {
       const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
       const tx = await contract.subscribe(userName);
       await tx.wait()
+
+      getSubs()
       setSub(false)
       setName(userName)
       setConnected(true)
@@ -136,13 +141,29 @@ function App() {
   function closeSub() {
     setSub(false)
   }
+
+  const getSubs = async () => {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
+      const _getSubs = await contract.subscriberCount()
+      setSubs(_getSubs.toString())
+    } catch(error) {
+      console.log(error)
+    }
+  }
   
+  useEffect(() => {
+    getSubs()
+  }, []);
+
   return (
     <div className="app">
       <BrowserRouter>
           <>
             {/* <button className='disconnect-btn' onClick={disconnect}>{name}</button> */}
-            
+            <p className='subs'>total subscribers: {subs}</p>
             <nav>
               <Link to='/home'>Home</Link>
               <Link to='/mint'>Collect</Link>
