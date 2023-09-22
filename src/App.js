@@ -145,8 +145,7 @@ function App() {
   const getSubs = async () => {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
+      const contract = new ethers.Contract(subscribeAddress, SubABI, provider);
       const _getSubs = await contract.subscriberCount()
       setSubs(_getSubs.toString())
     } catch(error) {
