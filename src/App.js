@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { ethers } from 'ethers';
 import Mint from './Mint';
 import Podcast from './Podcast';
+import Home from './Home';
 import ABI from './ABI.json';
 import Logo from './Logo.png';
 
@@ -105,7 +106,8 @@ function App() {
           <>
             <button className='disconnect-btn' onClick={disconnect}>{name}</button>
             <nav>
-              <Link to='/mint'>Mint</Link>
+              <Link to='/home'>Home</Link>
+              <Link to='/mint'>Collect</Link>
               <Link to='/podcast'>Podcast</Link>
             </nav>
 
@@ -113,7 +115,8 @@ function App() {
               <img src={Logo} alt='logo' />
               <hr />
             <Routes>
-            <Route path="/" element={<Podcast />} />
+            <Route path="/" element={<Home />} />
+              <Route path='/home' element={<Home/>}/>
               <Route path='/mint' element={<Mint mint={mint} minted={minted} />} />
               <Route path='/podcast' element={<Podcast />} />
             </Routes>
