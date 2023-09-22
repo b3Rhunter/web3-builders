@@ -178,7 +178,7 @@ function App() {
               <hr />
             {sub && (
               <div className='sub'>
-                <p>Sign up today!</p>
+                <strong style={{fontSize: "18px"}}>Sign up today!</strong>
                 <input type='text' placeholder='choose user name...' value={userName} onChange={(e) => setUserName(e.target.value)}/>
                 <div className='sub-btns'>
                 <button onClick={() => subscribe(userName)}>submit</button>
