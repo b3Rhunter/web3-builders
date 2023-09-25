@@ -1,23 +1,25 @@
-import {useState, useEffect} from 'react';
-import {ethers} from 'ethers';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { ethers } from 'ethers';
+import Mint from './Mint';
+import Podcast from './Podcast';
+import Home from './Home';
+import Team from './Team';
 import ABI from './ABI.json';
+import SubABI from './SubscribeABI.json';
+import Logo from './Logo.png';
 
-const contractAddress = "0x8f71c43008C1EB3f79183A2dB46E85Cac6C3517c"
+const contractAddress = "0xD748F1C8C250f1bF1B9EFadd156aBD6EaE5F5143";
+const subscribeAddress = "0xf8eC8459ee17B65e6f8A741B3286719822C92A78";
 
 function App() {
 
   const [connected, setConnected] = useState(false);
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState(null);
-  const [auction, setAuction] = useState([]);
-  const [highestBidder, setHighestBidder] = useState("");
-  const [highestBid, setHighestBid] = useState("");
-  const [endOfAuction, setEndOfAuction] = useState("");
-  const [currentPrice, setCurrentPrice] = useState("");
-  const [balance, setBalance] = useState(0);
-  const [duration, setDuration] = useState("");
-  const [bidPrice, setBidPrice] = useState("");
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [minted, setMinted] = useState(false);
+  const [name, setName] = useState(null);
+  const [userName, setUserName] = useState("");
+  const [sub, setSub] = useState(false);
+  const [subs, setSubs] = useState("")
 
   const connect = async () => {
     try {
@@ -25,7 +27,7 @@ function App() {
       provider = new ethers.providers.Web3Provider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
       const network = await provider.getNetwork();
-      const desiredChainId = '0xaa36a7';
+      const desiredChainId = '0xAA36A7';
       if (network.chainId !== parseInt(desiredChainId)) {
         try {
           await window.ethereum.request({
@@ -45,7 +47,7 @@ function App() {
                     symbol: 'ETH',
                     decimals: 18
                   },
-                  rpcUrls: ['https://eth-sepolia.g.alchemy.com/v2/demo'],
+                  rpcUrls: ['https://rpc.sepolia.org'],
                   blockExplorerUrls: ['https://sepolia.etherscan.io'],
                 }],
               });
@@ -57,125 +59,143 @@ function App() {
           }
         }
       }
-      provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = await provider.getSigner();
-      const userAddress = await signer.getAddress();
-      const contract = new ethers.Contract(contractAddress, ABI, signer);
-      const _auction = await contract.currentAuction();
-      const getPrice = await contract.declaredValue();
-      const getBalance = await contract.balanceOf(userAddress);
-      await signer.signMessage("Hello World");
+      provider = new ethers.providers.Web3Provider(window.ethereum)
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const _userAddress = await signer.getAddress();
+      const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
+      const subCheck = await contract.isSubscriber(_userAddress);
+
       const { ethereum } = window;
       if (ethereum) {
         const ensProvider = new ethers.providers.InfuraProvider('mainnet');
-        const displayAddress = userAddress?.substr(0, 6) + "...";
-        const ens = await ensProvider.lookupAddress(userAddress);
+        const displayAddress = _userAddress?.substr(0, 6) + "...";
+        const ens = await ensProvider.lookupAddress(_userAddress);
         if (ens !== null) {
           setName(ens)
         } else {
           setName(displayAddress)
         }
       }
-      setConnected(true);
-      setAddress(userAddress)
-      setAuction(_auction)
-      setHighestBidder(_auction[0].toString())
-      setHighestBid(_auction[1].toString())
-      setEndOfAuction(_auction[2].toString());
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      const remainingTime = _auction[2] - currentTimestamp;
-      setTimeLeft(remainingTime > 0 ? remainingTime : 0);
-      
 
-      setCurrentPrice(getPrice.toString())
-      setBalance(getBalance.toString())
+      await signer.signMessage("Welcome to Web3 Builders!");
+
+      if (subCheck === false) {
+        setSub(true)
+      }
+      if (subCheck === true) {
+        const getName = await contract.getUsername(_userAddress);
+        setName(getName)
+      }
+      setConnected(true)
     } catch(error) {
       console.log(error)
     }
   }
 
-  const startAuction = async () => {
+  const mint = async () => {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
+      const address = signer.getAddress();
       const contract = new ethers.Contract(contractAddress, ABI, signer);
-      const tx = await contract.startAuction(duration);
+      const tx = await contract.safeMint(address);
       await tx.wait()
+      setMinted(true)
     } catch(error) {
       console.log(error)
     }
   }
 
-  const bid = async () => {
-    try{
+  const disconnect = async () => {
+    setConnected(false)
+    setMinted(false)
+    setSub(false)
+  }
+
+  const subscribe = async (userName) => {
+    try {
+      console.log(userName)
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, ABI, signer);
-      const tx = await contract.bid({value: ethers.utils.parseEther(bidPrice)});
+      const address = signer.getAddress();
+      const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
+      const tx = await contract.subscribe(userName);
       await tx.wait()
+
+      getSubs()
+      setSub(false)
+      setName(userName)
+      setConnected(true)
     } catch(error) {
       console.log(error)
     }
   }
 
-  const endAuction = async () => {
+  function openSub() {
+    setSub(true)
+  }
+
+  function closeSub() {
+    setSub(false)
+  }
+
+  const getSubs = async () => {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, ABI, signer);
-      const tx = await contract.endAuction();
-      await tx.wait()
+      const contract = new ethers.Contract(subscribeAddress, SubABI, provider);
+      const _getSubs = await contract.subscriberCount()
+      setSubs(_getSubs.toString())
     } catch(error) {
       console.log(error)
     }
   }
-
+  
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(prevTime => prevTime > 0 ? prevTime - 1 : 0);
-    }, 1000);
-
-    return () => clearInterval(interval);
-}, []);
-
-
+    getSubs()
+  }, []);
 
   return (
-    <div className="App">
+    <div className="app">
+      <BrowserRouter>
+          <>
+            {/* <button className='disconnect-btn' onClick={disconnect}>{name}</button> */}
+            <p className='subs'>total subscribers: {subs}</p>
+            <nav>
+              <Link to='/home'>Home</Link>
+              <Link to='/mint'>Collect</Link>
+              <Link to='/podcast'>Podcast</Link>
+              <Link to='/team'>The Team</Link>
+              {!connected && <button onClick={connect}>Sign In</button>}
+              {connected && <button onClick={disconnect}>{name}</button>}
+            </nav>
 
-      {!connected && <button onClick={connect}>connect</button>}
-      {connected && <button className='connect'>{name}</button>}
-      {connected && (
-      <main>
-      <section className='auction-details'>
-      <p>Highest Bidder: {highestBidder?.substr(0, 6) + "..."}</p>
-      <p>Highest Bid: {highestBid && ethers.utils.formatEther(highestBid)} ETH</p>
-      <p>Auction Ending in: {timeLeft} seconds</p>
-      <p>Price: {ethers.utils.formatEther(currentPrice)}</p>
-    </section>
+            <div className='card'>
+              <img src={Logo} alt='logo' />
+              <hr />
+            {sub && (
+              <div className='sub'>
+                <strong style={{fontSize: "18px"}}>Sign up today!</strong>
+                <input type='text' placeholder='choose user name...' value={userName} onChange={(e) => setUserName(e.target.value)}/>
+                <div className='sub-btns'>
+                <button onClick={() => subscribe(userName)}>submit</button>
+                <button onClick={closeSub}>close</button>
+                </div>
+              </div>
+            )}
+            <Routes>
+            <Route path="/" element={<Home />} />
+              <Route path='/home' element={<Home/>}/>
+              <Route path='/mint' element={<Mint mint={mint} minted={minted} connect={connect} connected={connected} />} />
+              <Route path='/podcast' element={<Podcast />} />
+              <Route path='/team' element={<Team/>}/>
+            </Routes>
 
-    <section className='card'>
-      <div className='ui'>
-      <input type='text' value={duration} onChange={(e) => setDuration(e.target.value)} placeholder='set round duration...'/>
-      <button onClick={() => startAuction(duration)}>Start Auction</button>
-
-      <input type='text' value={bidPrice} onChange={(e) => setBidPrice(e.target.value)} placeholder='place bid...'/>
-      <button onClick={() => bid(bidPrice)}>Bid!</button>
-      <button onClick={endAuction}>End Auction</button>
-      </div>
-
-      <div className='orb-container'>
-      <section className="stage">
-        <figure className="orb"><span className="shadow"></span></figure>
-      </section>
-      </div>
-      
-    </section>
-      </main>
-      )}
+            </div>
+          </>
+      </BrowserRouter>
     </div>
   );
 }
