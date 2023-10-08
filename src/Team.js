@@ -1,5 +1,6 @@
 import Evan from './evan.jpg';
 import Will from './will.jpg';
+import Pub from './pub.jpg';
 
 function Team() {
     return (
@@ -19,6 +20,16 @@ function Team() {
                 <div>
                     <p><strong>Will Foxley</strong></p>
                     <p>@wsfoxley</p>
+                </div>
+                </a>
+            </div>
+
+            <div className='evan'>
+                <a href='https://twitter.com/ssailsbury' target='_blank' rel="noreferrer">
+                <img src={Pub} alt='Pub'/>
+                <div>
+                    <p><strong>Stanton Sailsbury</strong></p>
+                    <p>@ssailsbury</p>
                 </div>
                 </a>
             </div>

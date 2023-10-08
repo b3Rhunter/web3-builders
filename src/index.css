@@ -127,6 +127,8 @@ button:active {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  overflow-x: hidden;
 }
 
 .mint {
@@ -239,10 +241,10 @@ iframe {
 
 .team {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   gap: 1em;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
   width: 100%;
   height: 100%;
@@ -254,14 +256,14 @@ iframe {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1em;
+  gap: 20px;
   min-width: 250px;
-  width: calc(50% - 1em);
+  width: calc(33% - 20px);
 }
 
 .team img {
   width: 90%;
-  max-width: 225px;
+  max-width: 150px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
@@ -335,4 +337,39 @@ iframe {
 ::-webkit-scrollbar-thumb:hover {
   background: #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.678);
+}
+
+
+
+@media screen and (max-width: 767px) {
+
+  .evan, .will {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    min-width: 250px;
+    width: 100%;
+  }
+
+  .team {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    flex-wrap: wrap;
+  
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    overflow-y: auto;
+  }
+
+  .team img {
+    width: 90%;
+    max-width: 225px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
 }

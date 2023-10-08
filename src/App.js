@@ -63,8 +63,8 @@ function App() {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
       const _userAddress = await signer.getAddress();
-      const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
-      const subCheck = await contract.isSubscriber(_userAddress);
+      //const contract = new ethers.Contract(subscribeAddress, SubABI, signer);
+      //const subCheck = await contract.isSubscriber(_userAddress);
 
       const { ethereum } = window;
       if (ethereum) {
@@ -80,19 +80,20 @@ function App() {
 
       await signer.signMessage("Welcome to Web3 Builders!");
 
-      if (subCheck === false) {
-        setSub(true)
-      }
-      if (subCheck === true) {
-        const getName = await contract.getUsername(_userAddress);
-        setName(getName)
-      }
+      //if (subCheck === false) {
+      //  setSub(true)
+      //}
+      //if (subCheck === true) {
+      //  const getName = await contract.getUsername(_userAddress);
+      //  setName(getName)
+      //}
       setConnected(true)
     } catch(error) {
       console.log(error)
     }
   }
 
+  /*
   const mint = async () => {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -107,6 +108,7 @@ function App() {
       console.log(error)
     }
   }
+  */
 
   const disconnect = async () => {
     setConnected(false)
@@ -114,6 +116,7 @@ function App() {
     setSub(false)
   }
 
+/*
   const subscribe = async (userName) => {
     try {
       console.log(userName)
@@ -157,15 +160,16 @@ function App() {
     getSubs()
   }, []);
 
+  */
+
   return (
     <div className="app">
       <BrowserRouter>
           <>
-            {/* <button className='disconnect-btn' onClick={disconnect}>{name}</button> */}
-            <p className='subs'>total subscribers: {subs}</p>
+            {/*<p className='subs'>total subscribers: {subs}</p>*/}
             <nav>
               <Link to='/home'>Home</Link>
-              <Link to='/mint'>Collect</Link>
+              {/*<Link to='/mint'>Collect</Link>*/}
               <Link to='/podcast'>Podcast</Link>
               <Link to='/team'>The Team</Link>
               {!connected && <button onClick={connect}>Sign In</button>}
@@ -175,6 +179,7 @@ function App() {
             <div className='card'>
               <img src={Logo} alt='logo' />
               <hr />
+            {/* 
             {sub && (
               <div className='sub'>
                 <strong style={{fontSize: "18px"}}>Sign up today!</strong>
@@ -185,10 +190,11 @@ function App() {
                 </div>
               </div>
             )}
+            */}
             <Routes>
             <Route path="/" element={<Home />} />
               <Route path='/home' element={<Home/>}/>
-              <Route path='/mint' element={<Mint mint={mint} minted={minted} connect={connect} connected={connected} />} />
+              {/* <Route path='/mint' element={<Mint mint={mint} minted={minted} connect={connect} connected={connected} />} /> */}
               <Route path='/podcast' element={<Podcast />} />
               <Route path='/team' element={<Team/>}/>
             </Routes>

@@ -1,5 +1,5 @@
 import { AiOutlineTwitter, AiFillYoutube, AiFillAmazonCircle, AiFillApple} from 'react-icons/ai';
-import { BsSpotify } from 'react-icons/bs';
+import { BsSpotify, BsDiscord } from 'react-icons/bs';
 import { SiPandora } from 'react-icons/si';
 import iHeart from './iheart_logo.svg';
 
@@ -15,6 +15,7 @@ function Home() {
             <br/><br/>
             Subscribe now and become a part of the Web3 revolution!</p><div className="home-cont">
             <a href="https://twitter.com/web3builderspod" target="_blank" rel="noreferrer"><AiOutlineTwitter /></a>
+            <a href ='https://discord.gg/xm3RR9wJ6p' target="_blank" rel="noreferrer"><BsDiscord/></a>
             <a href="https://www.youtube.com/channel/UCUL5ZbRVivTBp_YEEx7SEGg" target="_blank" rel="noreferrer"><AiFillYoutube /></a>
             <a href="https://open.spotify.com/show/6eV2i8BgtnL002ZO7fUzp5?si=a2ba914bbb0e4ca0" target="_blank" rel="noreferrer"><BsSpotify /></a>
             <a href="https://music.amazon.com/podcasts/bcc08822-d259-42ae-b188-774d45665177/web3-builders" target="_blank" rel="noreferrer"><AiFillAmazonCircle /></a>

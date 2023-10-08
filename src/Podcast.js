@@ -3,6 +3,8 @@ import VideoThumbnail from "./VideoThumbnail";
 function Podcast() {
     return(
         <div className="podcast">
+            <VideoThumbnail videoId="WcGpHXTepcA" title="Holding Lido Publicly Accountable W/ Ben Edgington" />
+            <VideoThumbnail videoId="Fb6SKYncJ58" title="PopPunk Harrison Interview" />
             <VideoThumbnail videoId="Y0ddkSa1ZuI" title="Danny Ryan Interview" />
             <VideoThumbnail videoId="_PP3ibZubqM" title="Rysk Finance Interview" />
             <VideoThumbnail videoId="QpIWPo9vPB8" title="Vitalik Interview"/>
