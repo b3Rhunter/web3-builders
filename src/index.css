@@ -60,6 +60,11 @@ nav a {
   line-height: 1.6;
 }
 
+a:active {
+  text-decoration: none;
+  color: black;
+}
+
 .card {
   height: calc(100% - 130px);
   width: 80%;
@@ -92,6 +97,7 @@ nav a {
 
 button {
   background: rgba(255, 255, 255, 0.2);
+  color: black;
   border-radius: 50em;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
@@ -109,6 +115,7 @@ button:hover {
 }
 
 button:active {
+  color: black;
   transform: translateY(4px);
 }
 
