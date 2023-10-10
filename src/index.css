@@ -7,6 +7,7 @@ body {
   font-family: monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
 code {
@@ -63,6 +64,10 @@ nav a {
 a:active {
   text-decoration: none;
   color: black;
+}
+
+.logo {
+  filter: drop-shadow(5px 5px 10px #00000046);
 }
 
 .card {

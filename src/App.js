@@ -7,7 +7,7 @@ import Home from './Home';
 import Team from './Team';
 import ABI from './ABI.json';
 import SubABI from './SubscribeABI.json';
-import Logo from './Logo.png';
+import Logo from './Logo.svg';
 
 const contractAddress = "0xD748F1C8C250f1bF1B9EFadd156aBD6EaE5F5143";
 const subscribeAddress = "0xf8eC8459ee17B65e6f8A741B3286719822C92A78";
@@ -177,7 +177,7 @@ function App() {
             </nav>
 
             <div className='card'>
-              <img src={Logo} alt='logo' />
+              <img className='logo' src={Logo} alt='logo' />
               <hr />
             {/* 
             {sub && (
