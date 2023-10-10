@@ -214,7 +214,7 @@ iframe {
   line-height: 1.6;
   font-size: 16px;
   font-weight: 700;
-  text-wrap: balance;
+
   min-width: 330px;
   max-width: 80%;
   flex-grow: 1;
