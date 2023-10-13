@@ -3,6 +3,8 @@ import VideoThumbnail from "./VideoThumbnail";
 function Podcast() {
     return(
         <div className="podcast">
+        
+            <VideoThumbnail videoId="7O4Zp_nuRyg" title="From 0xPARC To Base's Venmo W/ Daimo" />
             <VideoThumbnail videoId="WcGpHXTepcA" title="Holding Lido Publicly Accountable W/ Ben Edgington" />
             <VideoThumbnail videoId="Fb6SKYncJ58" title="PopPunk Harrison Interview" />
             <VideoThumbnail videoId="Y0ddkSa1ZuI" title="Danny Ryan Interview" />
